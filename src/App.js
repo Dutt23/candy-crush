@@ -221,18 +221,10 @@ const moveSquareDown = (board) =>{
 
   const dragStart = (e) =>{
     setSquareBeingDragged(e.target)
-    // e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
-    // console.log(e.target.classList)
-    // e.target.classList.add('hide');
-    // var img = document.createElement("img");
-    // img.src = blueCandy;
-    // img.height = "2px"
-    // img.width = "2px"
-    // e.dataTransfer.setDragImage(img, 0,0);
-    // e.dataTransfer.setDragImage(img, 1, 1);
+
     setTimeout(function(){
       e.target.style.visibility = "hidden";
-  }, 0);
+  }, 0, e);
     console.log("Drag start")
     setBoard([...board])
   }
