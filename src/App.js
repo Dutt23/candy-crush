@@ -198,9 +198,6 @@ const moveSquareDown = (board) =>{
   }
 
   const dragStart = (e) =>{
-    console.log(e)
-    console.log(e.target)
-    console.log(e.target.getAttribute('data-id'))
     const localBoard = [...board];
     setSquareBeingDraggedColor(localBoard[e.target.getAttribute('data-id')])
     localBoard[e.target.getAttribute('data-id')] = '';
@@ -209,29 +206,29 @@ const moveSquareDown = (board) =>{
     console.log("Drag start")
   }
 
-  const dragDrop = (e) =>{
-    console.log(e.target)
-    setSquareBeingReplaced(e.target)
-    console.log("Drag drop")
-  }
+  const dragDrop = (e) => setSquareBeingReplaced(e.target)
+  
 
-  const dragEnd = (e) =>{
+  const dragEnd = () =>{
     const squareBeingDraggedId =parseInt(squareBeingDragged.getAttribute('data-id'))
     if(!!Object.keys(squareBeingReplaced).length){
       const squareBeingReplacedId =parseInt(squareBeingReplaced.getAttribute('data-id'))
       console.log(squareBeingReplacedId)
       console.log(squareBeingDraggedId)
       const localBoard = [...board]
-      if(squareBeingReplacedId === squareBeingDraggedId){
-        localBoard[squareBeingDraggedId] = squareBeingDraggedColor;
-      }
-      else {
+      const validMoves = [ squareBeingDraggedId -1, squareBeingDraggedId +1, squareBeingDraggedId- width, squareBeingDraggedId+width ]
+      const validMove = validMoves.includes(squareBeingReplacedId);
+      if(squareBeingReplacedId !== squareBeingDraggedId && validMove){
         const currentSquareColor = localBoard[squareBeingReplacedId];
         localBoard[squareBeingReplacedId] = squareBeingDraggedColor;
         localBoard[squareBeingDraggedId] = currentSquareColor;
+        const opBoard = findMatches(localBoard);
+        setBoard([...opBoard])
       }
-      const opBoard = findMatches(localBoard)
-      setBoard([...opBoard])
+      else {
+        localBoard[squareBeingDraggedId] = squareBeingDraggedColor;
+        setBoard([...localBoard])
+      }
     }
     else {
       const localBoard = [...board];
