@@ -221,7 +221,7 @@ const moveSquareDown = (board) =>{
 
   const dragStart = (e) =>{
     setSquareBeingDragged(e.target)
-
+//https://stackoverflow.com/questions/36379184/html5-draggable-hide-original-element
     setTimeout(function(){
       e.target.style.visibility = "hidden";
   }, 0, e);
