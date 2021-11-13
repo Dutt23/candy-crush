@@ -67,7 +67,6 @@ const App = () => {
     const img = candyImageMap[color];
     return img ?? blank;
   }
-  let squaresResolved = 0;
   const checkForRowOf = (rowOf, board) =>{
     let modified = false;
     const moduloInvalid = width - rowOf;
@@ -265,13 +264,20 @@ const moveSquareDown = (board) =>{
     setSquareBeingDragged({});
 
   }
-
   return (
   <div className="app">
-   <div className="game">
+    {/* Drawback of this is image gets bigger and bigger */}
+   <div className="game" style={{
+      width: `${(width * (width-1)) * 10}px`,
+      height:  `${(width * (width-1)) * 10}px`,
+   }}>
      {board.map((candy, index) => {
       const  imgSrc = getImage(candy);
      return <img 
+     style={{
+      width: `${(width-1) * 10}px`,
+      height:  `${(width-1) * 10}px`,
+     }}
      onDrop={dragDrop}
      onDragStart={dragStart}
      onDragEnd={dragEnd}

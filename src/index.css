@@ -4,18 +4,11 @@
 }
 
 .game{
-   width: 560px;
-   height: 560px;
-   display: flex;
-   flex-wrap: wrap;
+   /* width: 560px;
+   height: 560px; */
 }
 
 .game img {
-  width: 70px;
-  height: 70px;
-}
-#drag-ghost {
-  width: 1px;
-  height: 1px;
-  background-color: yellow;
+  width: 90px;
+  height: 90px;
 }
