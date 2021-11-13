@@ -1,5 +1,22 @@
 import { useState, useEffect } from 'react';
+import blueCandy from './images/blue-candy.png'
+import greenCandy from './images/green-candy.png'
+import orangeCandy from './images/orange-candy.png'
+import redCandy from './images/red-candy.png'
+import yellowCandy from './images/yellow-candy.png'
+import purpleCandy from './images/purple-candy.png'
+import blank from './images/blank.png'
+
 const width = 8;
+
+const candyImageMap = {
+  'blue' : blueCandy,
+  'green' : greenCandy,
+  'orange' : orangeCandy,
+  'purple' : purpleCandy,
+  'red' : redCandy,
+  'yellow' :yellowCandy
+}
 const candyColors = [
   'blue',
   'green',
@@ -13,7 +30,6 @@ if(Array.prototype.equals)
     console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
 // attach the .equals method to Array's prototype to call it on any array
 Array.prototype.equals = function (array) {
-  console.log("INSIDE EQUALS")
     // if the other array is a falsy value, return
     if (!array)
         return false;
@@ -47,6 +63,10 @@ const App = () => {
   const [squareBeingReplaced, setSquareBeingReplaced] = useState({})
   const [squareBeingDraggedColor, setSquareBeingDraggedColor] = useState('white')
 
+  const getImage = (color) =>{
+    const img = candyImageMap[color];
+    return img ?? blank;
+  }
   let squaresResolved = 0;
   const checkForRowOf = (rowOf, board) =>{
     let modified = false;
@@ -200,12 +220,21 @@ const moveSquareDown = (board) =>{
   }
 
   const dragStart = (e) =>{
-    const localBoard = [...board];
-    setSquareBeingDraggedColor(localBoard[e.target.getAttribute('data-id')])
-    localBoard[e.target.getAttribute('data-id')] = '';
-    setBoard([...localBoard])
     setSquareBeingDragged(e.target)
+    // e.dataTransfer.setData('text/plain', e.target.getAttribute('data-id'));
+    // console.log(e.target.classList)
+    // e.target.classList.add('hide');
+    // var img = document.createElement("img");
+    // img.src = blueCandy;
+    // img.height = "2px"
+    // img.width = "2px"
+    // e.dataTransfer.setDragImage(img, 0,0);
+    // e.dataTransfer.setDragImage(img, 1, 1);
+    setTimeout(function(){
+      e.target.style.visibility = "hidden";
+  }, 0);
     console.log("Drag start")
+    setBoard([...board])
   }
 
   const dragDrop = (e) => setSquareBeingReplaced(e.target)
@@ -213,11 +242,12 @@ const moveSquareDown = (board) =>{
 
   const dragEnd = () =>{
     const squareBeingDraggedId =parseInt(squareBeingDragged.getAttribute('data-id'))
+    squareBeingDragged.style.visibility = 'visible';
+    const squareBeingDraggedColor = board[squareBeingDraggedId]
     if(!!Object.keys(squareBeingReplaced).length){
       const squareBeingReplacedId =parseInt(squareBeingReplaced.getAttribute('data-id'))
-      console.log(squareBeingReplacedId)
-      console.log(squareBeingDraggedId)
       const localBoard = [...board]
+      
       const validMoves = [ squareBeingDraggedId -1, squareBeingDraggedId +1, squareBeingDraggedId- width, squareBeingDraggedId+width ]
       const validMove = validMoves.includes(squareBeingReplacedId);
       if(squareBeingReplacedId !== squareBeingDraggedId && validMove){
@@ -253,6 +283,7 @@ const moveSquareDown = (board) =>{
   <div className="app">
    <div className="game">
      {board.map((candy, index) => {
+      const  imgSrc = getImage(candy);
      return <img 
      onDrop={dragDrop}
      onDragStart={dragStart}
@@ -263,8 +294,8 @@ const moveSquareDown = (board) =>{
      draggable={true}
      data-id={index}
      key={index}
-     style={{ backgroundColor: candy }}
-     alt={candy}
+     src={imgSrc}
+     alt={imgSrc}
      />
      }
      )}

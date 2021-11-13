@@ -14,3 +14,8 @@
   width: 70px;
   height: 70px;
 }
+#drag-ghost {
+  width: 1px;
+  height: 1px;
+  background-color: yellow;
+}
