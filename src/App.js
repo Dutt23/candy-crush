@@ -131,8 +131,8 @@ const App = () => {
   }
 
   const findMatches = (localBoard) =>{
-    let [modifed4, boardUpdate4Matches] = updateBoard(4, localBoard)
-    let [modifed3, boardAfterInint] = updateBoard(3, boardUpdate4Matches)
+    const [modifed4, boardUpdate4Matches] = updateBoard(4, localBoard)
+    const [modifed3, boardAfterInint] = updateBoard(3, boardUpdate4Matches)
     // console.log("Board after first init" + boardAfterInint)
     let opBoard = boardAfterInint;
     if(modifed4 || modifed3){
@@ -149,7 +149,10 @@ const App = () => {
         modifyOn3  = modify3;
       }
     }
-    return opBoard;
+    return [
+      (modifed3 || modifed4),
+      opBoard
+    ]
   }
   const createBoard = () =>{
     const localBoard = []
@@ -160,10 +163,9 @@ const App = () => {
       localBoard.push(randomColor)
     }
 
-    const opBoard = findMatches(localBoard)
+    const [matchesFound, opBoard] = findMatches(localBoard)
     setBoard([...opBoard])
-    console.log("Points : " + squaresResolved)
-    // setBoard(boardUpdate3Matches);   
+    console.log("Points : " + squaresResolved) 
    
   }
 const moveSquareDown = (board) =>{
@@ -222,8 +224,14 @@ const moveSquareDown = (board) =>{
         const currentSquareColor = localBoard[squareBeingReplacedId];
         localBoard[squareBeingReplacedId] = squareBeingDraggedColor;
         localBoard[squareBeingDraggedId] = currentSquareColor;
-        const opBoard = findMatches(localBoard);
+        const [matchesFound, opBoard] = findMatches(localBoard);
+        if(matchesFound)
         setBoard([...opBoard])
+        else {
+          localBoard[squareBeingReplacedId] = currentSquareColor;
+          localBoard[squareBeingDraggedId] = squareBeingDraggedColor;
+          setBoard([...localBoard]);
+        }
       }
       else {
         localBoard[squareBeingDraggedId] = squareBeingDraggedColor;
@@ -235,6 +243,7 @@ const moveSquareDown = (board) =>{
       localBoard[squareBeingDraggedId] = squareBeingDraggedColor;
       setBoard([...localBoard])
     }
+    setSquareBeingDraggedColor('')
     setSquareBeingReplaced({});
     setSquareBeingDragged({});
 
