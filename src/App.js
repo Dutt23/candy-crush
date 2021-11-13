@@ -6,6 +6,7 @@ import redCandy from './images/red-candy.png'
 import yellowCandy from './images/yellow-candy.png'
 import purpleCandy from './images/purple-candy.png'
 import blank from './images/blank.png'
+import ScoreBoard from './components/scoreboard'
 
 const width = 8;
 
@@ -61,8 +62,7 @@ const App = () => {
   const [board, setBoard] = useState([]);
   const [squareBeingDragged, setSquareBeingDragged] = useState({})
   const [squareBeingReplaced, setSquareBeingReplaced] = useState({})
-  const [squareBeingDraggedColor, setSquareBeingDraggedColor] = useState('white')
-
+  const [scoreDisplay, setScoreDisplay] = useState(0)
   const getImage = (color) =>{
     const img = candyImageMap[color];
     return img ?? blank;
@@ -88,11 +88,10 @@ const App = () => {
       if(currentColor !== '' && valuesMatch){
         modified = true;
         board[i] = '';
-        squaresResolved++;
         for(let j = 0; j < row.length; j ++){
           board[row[j]] =''
-        squaresResolved++;
         }
+        setScoreDisplay((score) => score + rowOf);
       }
     }
     return [
@@ -121,11 +120,10 @@ const App = () => {
       if(currentColor !== '' && valuesMatch){     
         board[i] = '';
         modified = true;
-        squaresResolved++;
         for(let j = 0; j < columns.length; j ++){
           board[columns[j]] = '';
-          squaresResolved++;
         }
+        setScoreDisplay((score) => score + columnOf)
       }
     }
     return [
@@ -185,8 +183,6 @@ const App = () => {
 
     const [matchesFound, opBoard] = findMatches(localBoard)
     setBoard([...opBoard])
-    console.log("Points : " + squaresResolved) 
-   
   }
 const moveSquareDown = (board) =>{
   let emptySquare = false;
@@ -265,7 +261,6 @@ const moveSquareDown = (board) =>{
       localBoard[squareBeingDraggedId] = squareBeingDraggedColor;
       setBoard([...localBoard])
     }
-    setSquareBeingDraggedColor('')
     setSquareBeingReplaced({});
     setSquareBeingDragged({});
 
@@ -292,6 +287,7 @@ const moveSquareDown = (board) =>{
      }
      )}
    </div>
+   <ScoreBoard score={scoreDisplay}/>
     </div>
   );
 }
