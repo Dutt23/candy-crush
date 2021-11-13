@@ -222,10 +222,14 @@ const moveSquareDown = (board) =>{
       console.log(squareBeingReplacedId)
       console.log(squareBeingDraggedId)
       const localBoard = [...board]
-      const currentSquareColor = localBoard[squareBeingReplacedId];
-      localBoard[squareBeingReplacedId] = squareBeingDraggedColor;
-      localBoard[squareBeingDraggedId] = currentSquareColor;
-      
+      if(squareBeingReplacedId === squareBeingDraggedId){
+        localBoard[squareBeingDraggedId] = squareBeingDraggedColor;
+      }
+      else {
+        const currentSquareColor = localBoard[squareBeingReplacedId];
+        localBoard[squareBeingReplacedId] = squareBeingDraggedColor;
+        localBoard[squareBeingDraggedId] = currentSquareColor;
+      }
       const opBoard = findMatches(localBoard)
       setBoard([...opBoard])
     }
